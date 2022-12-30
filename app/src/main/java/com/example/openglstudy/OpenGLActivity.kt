@@ -9,7 +9,10 @@ class OpenGLActivity : Activity() {
     private lateinit var gLView: GLSurfaceView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        gLView = MyGLSurfaceView(this)
+        gLView = GLSurfaceView(this).apply {
+            setEGLContextClientVersion(3)
+            setRenderer(Renderer(Triangle.create(this@OpenGLActivity)))
+        }
         setContentView(gLView)
     }
 }

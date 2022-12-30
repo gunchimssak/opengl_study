@@ -1,121 +1,65 @@
 package com.example.openglstudy
 
+import android.content.Context
+import android.content.res.Resources
 import android.opengl.GLES20
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
-import java.nio.FloatBuffer
+import android.opengl.GLES30.*
+import java.nio.IntBuffer
 
+class Triangle(
+    private val vertexShaderCode: String,
+    private val fragmentShaderCode: String
+) : Scene() {
+    private var vaoID = -1
+    private lateinit var program: Program
+    private val coordinate = floatArrayOf(
+        -0.5f, -0.5f, 0.0f,
+        0.5f, -0.5f, 0.0f,
+        0.0f, 0.5f, 0.0f
+    )
 
-const val COORDS_PER_VERTEX = 3
-var triangleCoords = floatArrayOf(     // in counterclockwise order:
-    0.0f, 0.622008459f, 0.0f,      // top
-    -0.5f, -0.311004243f, 0.0f,    // bottom left
-    0.5f, -0.311004243f, 0.0f      // bottom right
-)
-class Triangle {
-    private var mProgram: Int
-    private val vertexShaderCode =
-    // This matrix member variable provides a hook to manipulate
-        // the coordinates of the objects that use this vertex shader
-        "uniform mat4 uMVPMatrix;" +
-                "attribute vec4 vPosition;" +
-                "void main() {" +
-                // the matrix must be included as a modifier of gl_Position
-                // Note that the uMVPMatrix factor *must be first* in order
-                // for the matrix multiplication product to be correct.
-                "  gl_Position = uMVPMatrix * vPosition;" +
-                "}"
+    override fun init(width: Int, height: Int) {
+        glViewport(0, 0, width, height)
+        program = Program.create(
+            vertexShaderCode = vertexShaderCode,
+            fragmentShaderCode = fragmentShaderCode
+        )
+        val vbo = IntBuffer.allocate(1)
+        glGenBuffers(1, vbo)
+        val vao = IntBuffer.allocate(1)
+        glGenVertexArrays(1, vao)
+        vaoID = vao[0]
+        val vertexBuffer = coordinate.toFloatBuffer()
 
-    private val fragmentShaderCode =
-        "precision mediump float;" +
-                "uniform vec4 vColor;" +
-                "void main() {" +
-                "  gl_FragColor = vColor;" +
-                "}"
-
-    init {
-
-        val vertexShader: Int = loadShader(GLES20.GL_VERTEX_SHADER, vertexShaderCode)
-        val fragmentShader: Int = loadShader(GLES20.GL_FRAGMENT_SHADER, fragmentShaderCode)
-
-        mProgram = GLES20.glCreateProgram().also {
-
-            // add the vertex shader to program
-            GLES20.glAttachShader(it, vertexShader)
-
-            // add the fragment shader to program
-            GLES20.glAttachShader(it, fragmentShader)
-
-            // creates OpenGL ES program executables
-            GLES20.glLinkProgram(it)
-        }
+        glBindVertexArray(vaoID)
+        glBindBuffer(GL_ARRAY_BUFFER, vbo[0])
+        glBufferData(
+            GL_ARRAY_BUFFER,
+            Float.SIZE_BYTES * vertexBuffer.capacity(),
+            vertexBuffer,
+            GL_STATIC_DRAW
+        )
+        val aPosition = program.getAttributeLocation("aPos")
+        GLES20.glVertexAttribPointer(aPosition, 3, GL_FLOAT, false, 3 * Float.SIZE_BYTES, 0)
+        glEnableVertexAttribArray(aPosition)
+        glBindBuffer(GL_ARRAY_BUFFER, 0)
+        glBindVertexArray(0)
+        program.use()
     }
 
-    // Set color with red, green, blue and alpha (opacity) values
-    val color = floatArrayOf(0.63671875f, 0.76953125f, 0.22265625f, 1.0f)
+    override fun draw() {
+        glClearColor(0.2f, 0.3f, 0.3f, 1.0f)
+        glClear(GL_COLOR_BUFFER_BIT)
+        glBindVertexArray(vaoID)
+        glDrawArrays(GL_TRIANGLES, 0, 3)
+    }
 
-    private var vertexBuffer: FloatBuffer =
-        // (number of coordinate values * 4 bytes per float)
-        ByteBuffer.allocateDirect(triangleCoords.size * 4).run {
-            // use the device hardware's native byte order
-            order(ByteOrder.nativeOrder())
-
-            // create a floating point buffer from the ByteBuffer
-            asFloatBuffer().apply {
-                // add the coordinates to the FloatBuffer
-                put(triangleCoords)
-                // set the buffer to read the first coordinate
-                position(0)
-            }
-        }
-
-    private var positionHandle: Int = 0
-    private var mColorHandle: Int = 0
-    private var vPMatrixHandle: Int = 0
-    private val vertexCount: Int = triangleCoords.size / COORDS_PER_VERTEX
-    private val vertexStride: Int = COORDS_PER_VERTEX * 4 // 4 bytes per vertex
-    fun draw(mvpMatrix: FloatArray) {
-        // Add program to OpenGL ES environment
-        GLES20.glUseProgram(mProgram)
-
-        // get handle to vertex shader's vPosition member
-        // get handle to shape's transformation matrix
-        vPMatrixHandle = GLES20.glGetUniformLocation(mProgram, "uMVPMatrix")
-
-        // Pass the projection and view transformation to the shader
-        GLES20.glUniformMatrix4fv(vPMatrixHandle, 1, false, mvpMatrix, 0)
-
-        // Draw the triangle
-        GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, vertexCount)
-
-        // Disable vertex array
-        GLES20.glDisableVertexAttribArray(positionHandle)
-        positionHandle = GLES20.glGetAttribLocation(mProgram, "vPosition").also {
-            // Enable a handle to the triangle vertices
-            GLES20.glEnableVertexAttribArray(it)
-
-            // Prepare the triangle coordinate data
-            GLES20.glVertexAttribPointer(
-                it,
-                COORDS_PER_VERTEX,
-                GLES20.GL_FLOAT,
-                false,
-                vertexStride,
-                vertexBuffer
-            )
-
-            // get handle to fragment shader's vColor member
-            mColorHandle = GLES20.glGetUniformLocation(mProgram, "vColor").also { colorHandle ->
-
-                // Set color for drawing the triangle
-                GLES20.glUniform4fv(colorHandle, 1, color, 0)
-            }
-
-            // Draw the triangle
-            GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, vertexCount)
-
-            // Disable vertex array
-            GLES20.glDisableVertexAttribArray(it)
+    companion object {
+        fun create(context: Context): Scene {
+            var resources = context.resources
+            val vertexShaderCode = resources.readRawTextFile(R.raw.triangle_vertex_shader)
+            val fragmentShaderCode = resources.readRawTextFile(R.raw.triangle_fragment_shader)
+            return Triangle(vertexShaderCode, fragmentShaderCode)
         }
     }
 }
