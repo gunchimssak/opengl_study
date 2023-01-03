@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory
 import android.opengl.GLES20.*
 import android.util.Log
 import androidx.annotation.RawRes
+import glm_.mat4x4.Mat4
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.FloatBuffer
@@ -21,7 +22,18 @@ fun compileShader(type: Int, code: String) = glCreateShader(type).also { shader 
     result[0]
     Log.e("123","${result[0]}")
 }
-
+fun toFloatArray(mat4: Mat4) : FloatArray{
+    var a: FloatArray = floatArrayOf()
+    with(mat4) {
+        a = floatArrayOf(
+            a0, a1, a2, a3,
+            b0, b1, b2, b3,
+            c0, c1, c2, c3,
+            d0, d1, d2, d3
+        )
+    }
+    return a
+}
 fun FloatArray.toFloatBuffer(): FloatBuffer = ByteBuffer
     .allocateDirect(this.size * Float.SIZE_BYTES)
     .order(ByteOrder.nativeOrder())
