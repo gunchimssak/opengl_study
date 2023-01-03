@@ -1,4 +1,4 @@
-package com.example.openglstudy
+package com.example.openglstudy.common
 
 import android.content.Context
 import android.content.res.Resources
@@ -6,7 +6,9 @@ import android.graphics.BitmapFactory
 import android.opengl.GLES20.*
 import android.util.Log
 import androidx.annotation.RawRes
+import glm_.glm
 import glm_.mat4x4.Mat4
+import glm_.vec4.Vec4
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.FloatBuffer
@@ -20,9 +22,10 @@ fun compileShader(type: Int, code: String) = glCreateShader(type).also { shader 
     GL_INVALID_VALUE
     GL_INVALID_OPERATION
     result[0]
-    Log.e("123","${result[0]}")
+    Log.e("123", "${result[0]}")
 }
-fun toFloatArray(mat4: Mat4) : FloatArray{
+
+fun toFloatArray(mat4: Mat4): FloatArray {
     var a: FloatArray = floatArrayOf()
     with(mat4) {
         a = floatArrayOf(
@@ -34,6 +37,21 @@ fun toFloatArray(mat4: Mat4) : FloatArray{
     }
     return a
 }
+
+fun FloatArray.toMat4(): Mat4 {
+    return if (this.size != 16)
+        Mat4()
+    else
+        Mat4(
+            Vec4(this[0], this[4], this[8], this[12]),
+            Vec4(this[1], this[5], this[9], this[13]),
+            Vec4(this[2], this[6], this[10], this[14]),
+            Vec4(this[3], this[7], this[11], this[15])
+        )
+}
+
+fun product(mat1: Mat4, mat2: Mat4) = glm.matrixCompMult(mat1, mat2)
+
 fun FloatArray.toFloatBuffer(): FloatBuffer = ByteBuffer
     .allocateDirect(this.size * Float.SIZE_BYTES)
     .order(ByteOrder.nativeOrder())

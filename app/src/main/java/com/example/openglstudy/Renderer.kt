@@ -1,7 +1,7 @@
 package com.example.openglstudy
 
-import android.opengl.GLES20.*
 import android.opengl.GLSurfaceView
+import com.example.openglstudy.common.Scene
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
 

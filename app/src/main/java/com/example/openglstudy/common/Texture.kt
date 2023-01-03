@@ -1,4 +1,4 @@
-package com.example.openglstudy
+package com.example.openglstudy.common
 
 import android.graphics.Bitmap
 import android.opengl.GLES30

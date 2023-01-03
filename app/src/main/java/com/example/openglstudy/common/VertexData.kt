@@ -1,6 +1,5 @@
-package com.example.openglstudy
+package com.example.openglstudy.common
 
-import android.opengl.GLES20
 import android.opengl.GLES20.GL_STATIC_DRAW
 import android.opengl.GLES30.*
 import android.util.Log

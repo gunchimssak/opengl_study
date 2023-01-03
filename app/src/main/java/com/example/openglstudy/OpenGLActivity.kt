@@ -2,7 +2,6 @@ package com.example.openglstudy
 
 import android.app.Activity
 import android.opengl.GLSurfaceView
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 
 class OpenGLActivity : Activity() {
@@ -11,7 +10,7 @@ class OpenGLActivity : Activity() {
         super.onCreate(savedInstanceState)
         gLView = GLSurfaceView(this).apply {
             setEGLContextClientVersion(3)
-            setRenderer(Renderer(Triangle.create(this@OpenGLActivity)))
+            setRenderer(Renderer(RenderScene.create(this@OpenGLActivity)))
         }
         setContentView(gLView)
     }

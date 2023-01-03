@@ -1,4 +1,4 @@
-package com.example.openglstudy
+package com.example.openglstudy.common
 
 import android.os.SystemClock
 

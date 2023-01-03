@@ -1,4 +1,4 @@
-package com.example.openglstudy
+package com.example.openglstudy.common
 
 import android.opengl.GLES20.*
 import android.util.Log
@@ -19,7 +19,6 @@ class Program(private val vertexShader: Int, private val fragmentShader: Int) {
     private fun fetchAttributes() {
         val count = IntBuffer.allocate(1)
         glGetProgramiv(program, GL_ACTIVE_ATTRIBUTES, count) //프로그램의 정보를 가져옵니다.
-        Log.e("att","attribute ${count[0]}")
         for (i in 0 until count[0]) {
             val name = glGetActiveAttrib(program, i, IntBuffer.allocate(1), IntBuffer.allocate(1))
             val location = glGetAttribLocation(program, name)
@@ -30,13 +29,11 @@ class Program(private val vertexShader: Int, private val fragmentShader: Int) {
 
         val count = IntBuffer.allocate(1)
         glGetProgramiv(program, GL_ACTIVE_UNIFORMS, count) //프로그램의 정보를 가져옵니다.
-        Log.e("kk","attribute ${count[0]}")
         for (i in 0 until count[0]) {
             val name = glGetActiveUniform(program, i, IntBuffer.allocate(1), IntBuffer.allocate(1))
             val location = glGetUniformLocation(program, name)
             uniforms[name] = location
         }
-        Log.e("kk","attribute ${uniforms}")
     }
 
     fun use() = glUseProgram(program)
