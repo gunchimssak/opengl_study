@@ -1,12 +1,15 @@
 package com.example.openglstudy
 
 import android.opengl.GLES20.*
+import android.util.Log
 import java.nio.IntBuffer
 
 class Program(private val vertexShader: Int, private val fragmentShader: Int) {
     private var program: Int = -1
     private var attributes = mutableMapOf<String, Int>()
+    private var uniforms = mutableMapOf<String, Int>()
     fun getAttributeLocation(name: String) = attributes.getValue(name)
+    fun getUniformLocation(name: String) = uniforms.getValue(name)
     fun link(){
         program = glCreateProgram()
         glAttachShader(program, vertexShader)
@@ -16,12 +19,26 @@ class Program(private val vertexShader: Int, private val fragmentShader: Int) {
     private fun fetchAttributes() {
         val count = IntBuffer.allocate(1)
         glGetProgramiv(program, GL_ACTIVE_ATTRIBUTES, count) //프로그램의 정보를 가져옵니다.
+        Log.e("att","attribute ${count[0]}")
         for (i in 0 until count[0]) {
             val name = glGetActiveAttrib(program, i, IntBuffer.allocate(1), IntBuffer.allocate(1))
             val location = glGetAttribLocation(program, name)
             attributes[name] = location
         }
     }
+    private fun fetchUniforms(){
+
+        val count = IntBuffer.allocate(1)
+        glGetProgramiv(program, GL_ACTIVE_UNIFORMS, count) //프로그램의 정보를 가져옵니다.
+        Log.e("kk","attribute ${count[0]}")
+        for (i in 0 until count[0]) {
+            val name = glGetActiveUniform(program, i, IntBuffer.allocate(1), IntBuffer.allocate(1))
+            val location = glGetUniformLocation(program, name)
+            uniforms[name] = location
+        }
+        Log.e("kk","attribute ${uniforms}")
+    }
+
     fun use() = glUseProgram(program)
     companion object{
         fun create(vertexShaderCode: String, fragmentShaderCode: String): Program {
@@ -30,6 +47,7 @@ class Program(private val vertexShader: Int, private val fragmentShader: Int) {
             return Program(vertexShader, fragmentShader).apply {
                 link()
                 fetchAttributes()
+                fetchUniforms()
                 glDeleteShader(vertexShader)
                 glDeleteShader(fragmentShader)
             }
