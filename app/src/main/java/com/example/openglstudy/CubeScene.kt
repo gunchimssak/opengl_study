@@ -81,25 +81,30 @@ class CubeScene(
         glActiveTexture(GL_TEXTURE0)
         glBindTexture(GL_TEXTURE_2D, texture1.getId())
         program.use()
-        val viewF = FloatArray(16) { 0f }
-        Matrix.setIdentityM(viewF, 0)
-        Matrix.translateM(viewF, 0, 0f, 0f, -5f)
-        Log.e("view", "${viewF.toList()}")
+        val viewM = Mat4(1f)
+        val view = glm.translate(viewM, Vec3(0f, 0f, -3f))
+//        val viewF = FloatArray(16) { 0f }
+//        Matrix.setIdentityM(viewF, 0)
+//        Matrix.translateM(viewF, 0, 0f, 0f, -5f)
+        Log.e("view", "${view}")
         GLES20.glUniformMatrix4fv(
             program.getUniformLocation("view"),
             1,
             false,
-            viewF,
+            toFloatArray(view),
             0
         )
-        val proj = FloatArray(16) { 0f }
-        Matrix.setIdentityM(proj, 0)
-        Matrix.perspectiveM(proj, 0, 45f, width.toFloat() / height, .1f, 10000f)
+        val projM = Mat4()
+        val proj = glm.perspective(projM, glm.PIf * 0.45f, width.toFloat() / height, 0.1f, 10000f)
+//        val proj = FloatArray(16) { 0f }
+//        Matrix.setIdentityM(proj, 0)
+//        Matrix.perspectiveM(proj, 0, 45f, width.toFloat() / height, .1f, 10000f)
+        Log.e("view", "${proj}")
         GLES20.glUniformMatrix4fv(
             program.getUniformLocation("projection"),
             1,
             false,
-            proj,
+            toFloatArray(proj),
             0
         )
     }
@@ -109,7 +114,7 @@ class CubeScene(
         glClear(GL_COLOR_BUFFER_BIT or GL_DEPTH_BUFFER_BIT)
         glBindVertexArray(vertexData.getVaoId())
         val model = FloatArray(16) { 0f }
-       // Matrix.setRotateM(model,0,3f,1f,2f,0f)
+        // Matrix.setRotateM(model,0,3f,1f,2f,0f)
         var trans = Mat4()
         trans = glm.rotate(trans, timer.sinceStartSecs(), Vec3(3, 1, 2))
         GLES20.glUniformMatrix4fv(
