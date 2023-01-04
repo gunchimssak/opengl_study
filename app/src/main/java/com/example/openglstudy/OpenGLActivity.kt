@@ -10,7 +10,7 @@ class OpenGLActivity : Activity() {
         super.onCreate(savedInstanceState)
         gLView = GLSurfaceView(this).apply {
             setEGLContextClientVersion(3)
-            setRenderer(Renderer(RenderScene.create(this@OpenGLActivity)))
+            setRenderer(Renderer(CubeScene.create(this@OpenGLActivity)))
         }
         setContentView(gLView)
     }

@@ -15,7 +15,6 @@ class Renderer(private val scene: Scene) : GLSurfaceView.Renderer {
     }
 
     override fun onDrawFrame(gl: GL10?) {
-        gl
         scene.draw()
     }
 

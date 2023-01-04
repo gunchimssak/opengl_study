@@ -2,6 +2,10 @@ package com.example.openglstudy.common
 
 import android.opengl.GLES20.*
 import android.util.Log
+import glm_.glm
+import glm_.mat4x4.Mat4
+import glm_.vec2.Vec2
+import glm_.vec3.Vec3
 import java.nio.IntBuffer
 
 class Program(private val vertexShader: Int, private val fragmentShader: Int) {
@@ -22,6 +26,7 @@ class Program(private val vertexShader: Int, private val fragmentShader: Int) {
         for (i in 0 until count[0]) {
             val name = glGetActiveAttrib(program, i, IntBuffer.allocate(1), IntBuffer.allocate(1))
             val location = glGetAttribLocation(program, name)
+            Log.e("name","${name}")
             attributes[name] = location
         }
     }
@@ -34,6 +39,15 @@ class Program(private val vertexShader: Int, private val fragmentShader: Int) {
             val location = glGetUniformLocation(program, name)
             uniforms[name] = location
         }
+    }
+    fun camera(translate: Float, rotate: Vec2): Mat4 {
+
+        val projection = glm.perspective(glm.PIf * 0.25f, 4.0f / 3.0f, 0.1f, 100.0f)
+        var view = glm.translate(Mat4(1.0f), Vec3(0.0f, 0.0f, -translate))
+        view = glm.rotate(view, rotate.y, Vec3(-1.0f, 0.0f, 0.0f))
+        view = glm.rotate(view, rotate.x, Vec3(0.0f, 1.0f, 0.0f))
+        val model = glm.scale(Mat4(1.0f), Vec3(0.5f))
+        return projection * view * model
     }
 
     fun use() = glUseProgram(program)

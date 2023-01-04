@@ -47,7 +47,7 @@ class RenderScene(
         glBindTexture(GL_TEXTURE_2D, texture1.getId())
         program.use()
 
-        glUniform1i(program.getUniformLocation("texture1"), 0)
+        //glUniform1i(program.getUniformLocation("texture1"), 0)
     }
 
     override fun draw() {
