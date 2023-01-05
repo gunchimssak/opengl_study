@@ -14,23 +14,35 @@ class Program(private val vertexShader: Int, private val fragmentShader: Int) {
     private var uniforms = mutableMapOf<String, Int>()
     fun getAttributeLocation(name: String) = attributes.getValue(name)
     fun getUniformLocation(name: String) = uniforms.getValue(name)
-    fun link(){
+    fun setUniformMat4(name: String, matrix: Mat4) {
+        glUniformMatrix4fv(
+            getUniformLocation(name),
+            1,
+            false,
+            toFloatArray(matrix),
+            0
+        )
+    }
+
+    fun link() {
         program = glCreateProgram()
         glAttachShader(program, vertexShader)
         glAttachShader(program, fragmentShader)
         glLinkProgram(program)
     }
+
     private fun fetchAttributes() {
         val count = IntBuffer.allocate(1)
         glGetProgramiv(program, GL_ACTIVE_ATTRIBUTES, count) //프로그램의 정보를 가져옵니다.
         for (i in 0 until count[0]) {
             val name = glGetActiveAttrib(program, i, IntBuffer.allocate(1), IntBuffer.allocate(1))
             val location = glGetAttribLocation(program, name)
-            Log.e("name","${name}")
+            Log.e("name", "${name}")
             attributes[name] = location
         }
     }
-    private fun fetchUniforms(){
+
+    private fun fetchUniforms() {
 
         val count = IntBuffer.allocate(1)
         glGetProgramiv(program, GL_ACTIVE_UNIFORMS, count) //프로그램의 정보를 가져옵니다.
@@ -40,18 +52,10 @@ class Program(private val vertexShader: Int, private val fragmentShader: Int) {
             uniforms[name] = location
         }
     }
-    fun camera(translate: Float, rotate: Vec2): Mat4 {
-
-        val projection = glm.perspective(glm.PIf * 0.25f, 4.0f / 3.0f, 0.1f, 100.0f)
-        var view = glm.translate(Mat4(1.0f), Vec3(0.0f, 0.0f, -translate))
-        view = glm.rotate(view, rotate.y, Vec3(-1.0f, 0.0f, 0.0f))
-        view = glm.rotate(view, rotate.x, Vec3(0.0f, 1.0f, 0.0f))
-        val model = glm.scale(Mat4(1.0f), Vec3(0.5f))
-        return projection * view * model
-    }
 
     fun use() = glUseProgram(program)
-    companion object{
+
+    companion object {
         fun create(vertexShaderCode: String, fragmentShaderCode: String): Program {
             var vertexShader = compileShader(GL_VERTEX_SHADER, vertexShaderCode)
             var fragmentShader = compileShader(GL_FRAGMENT_SHADER, fragmentShaderCode)

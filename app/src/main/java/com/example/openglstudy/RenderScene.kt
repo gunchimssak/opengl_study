@@ -16,10 +16,10 @@ class RenderScene(
 ) : Scene() {
     private lateinit var program: Program
     private val coordinate = floatArrayOf(
-        0.5f, 0.5f * 0.51f, 0.0f, 1.0f, 1.0f,
-        0.5f, -0.5f * 0.51f, 0.0f, 1.0f, 0.0f,
-        -0.5f, -0.5f * 0.51f, 0.0f, 0.0f, 0.0f,
-        -0.5f, 0.5f * 0.51f, 0.0f, 0.0f, 1.0f
+        1f, 1f, 0.0f, 1.0f, 1.0f,
+        1f, -1f, 0.0f, 1.0f, 0.0f,
+        -1f, -1f, 0.0f, 0.0f, 0.0f,
+        -1f, 1f, 0.0f, 0.0f, 1.0f
     )
     private var scale = floatArrayOf(
         1.8f, 0f, 0f, 0f,
@@ -71,16 +71,16 @@ class RenderScene(
 
     private fun test() {
         val mat1 = scale.toMat4()
-        Log.e("product","$mat1")
+        Log.e("product", "$mat1")
         val mat2 = floatArrayOf(
-            1f,2f,3f,4f,
-            1f,2f,3f,4f,
-            1f,2f,3f,4f,
-            1f,2f,3f,4f,
+            1f, 2f, 3f, 4f,
+            1f, 2f, 3f, 4f,
+            1f, 2f, 3f, 4f,
+            1f, 2f, 3f, 4f,
         ).toMat4()
-        Log.e("product","$mat2")
+        Log.e("product", "$mat2")
         val result = glm.matrixCompMult(mat1, mat2)
-        Log.e("product","$result")
+        Log.e("product", "$result")
     }
 
     companion object {
@@ -91,7 +91,7 @@ class RenderScene(
             return RenderScene(
                 vertexShaderCode,
                 fragmentShaderCode,
-                Texture(loadBitmap(context, R.raw.bonobono))
+                Texture(loadBitmap(context, R.raw.landscape))
             )
         }
     }
