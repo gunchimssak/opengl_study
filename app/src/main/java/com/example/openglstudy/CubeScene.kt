@@ -22,7 +22,6 @@ class CubeScene(
 ) : Scene() {
 
     private lateinit var program: Program
-    private lateinit var backgroundProgram: Program
 
     private lateinit var cube: VertexData
     private lateinit var plane: VertexData
@@ -51,15 +50,11 @@ class CubeScene(
             vertexShaderCode = vertexShaderCode,
             fragmentShaderCode = fragmentShaderCode
         )
-        backgroundProgram = Program.create(
-            vertexShaderCode, fragmentShaderCode
-        )
         program.use()
-        backgroundProgram.use()
 
         background = VertexData(backgroundVertices, null, 5)
-        background.addAttribute(backgroundProgram.getAttributeLocation("aPos"), 3, 0)
-        background.addAttribute(backgroundProgram.getAttributeLocation("aTexCoord"), 2, 3)
+        background.addAttribute(program.getAttributeLocation("aPos"), 3, 0)
+        background.addAttribute(program.getAttributeLocation("aTexCoord"), 2, 3)
         background.bind()
 
         cube = VertexData(cubeVertices, null, 5)
@@ -88,7 +83,6 @@ class CubeScene(
             list.add(Vec3(x, 0, z))
         }
         grassPositions = list
-        Log.e("1", "${grassPositions}")
     }
 
     override fun draw() {
@@ -120,13 +114,13 @@ class CubeScene(
             glDrawArrays(GL_TRIANGLES, 0, 6)
         }
 
-        backgroundProgram.setUniformMat4("projection", Mat4())
-        backgroundProgram.setUniformMat4("view", Mat4())
+        program.setUniformMat4("projection", Mat4())
+        program.setUniformMat4("view", Mat4())
 
         glBindTexture(GL_TEXTURE_2D, landscape.getId())
         glBindVertexArray(background.getVaoId())
         val model = glm.rotate(Mat4(), glm.PIf * 1f, Vec3(0, 0, 1))
-        backgroundProgram.setUniformMat4("model", model)
+        program.setUniformMat4("model", model)
         glDrawArrays(GL_TRIANGLES, 0, 6)
 
     }
