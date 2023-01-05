@@ -43,22 +43,30 @@ val cubeVertices = floatArrayOf(
     -0.5f, 0.5f, 0.5f, 0.0f, 0.0f,
     -0.5f, 0.5f, -0.5f, 0.0f, 1.0f
 )
-
-val backgroundVertices = floatArrayOf(
-    -1f, -1f, .99f, 0.0f, 0.0f,
-    1f, -1f, .99f, 1.0f, 0.0f,
-    1f, 1f, .99f, 1.0f, 1.0f,
-    1f, 1f, .99f, 1.0f, 1.0f,
-    -1f, 1f, .99f, 0.0f, 1.0f,
-    -1f, -1f, .99f, 0.0f, 0.0f,
+val grassVertices = floatArrayOf(
+    -.5f, -.5f, 0f, 0f, 0f,
+    .5f, -.5f, 0f, 1f, 0f,
+    .5f, .5f, 0f, 1f, 1f,
+    .5f, .5f, 0f, 1f, 1f,
+    -.5f, .5f, 0f, 0f, 1f,
+    -.5f, -.5f, 0f, 0f, 0f
 )
 
-private val planeVertices = floatArrayOf(
-    5.0f, -0.5f, 5.0f, 2.0f, 0.0f,
-    -5.0f, -0.5f, 5.0f, 0.0f, 0.0f,
-    -5.0f, -0.5f, -5.0f, 0.0f, 2.0f,
+val backgroundVertices = floatArrayOf(
+    -1f, -1f, .999f, 0.0f, 0.0f,
+    1f, -1f, .999f, 1.0f, 0.0f,
+    1f, 1f, .999f, 1.0f, 1.0f,
+    1f, 1f, .999f, 1.0f, 1.0f,
+    -1f, 1f, .999f, 0.0f, 1.0f,
+    -1f, -1f, .999f, 0.0f, 0.0f,
+)
 
-    5.0f, -0.5f, 5.0f, 2.0f, 0.0f,
-    -5.0f, -0.5f, -5.0f, 0.0f, 2.0f,
-    5.0f, -0.5f, -5.0f, 2.0f, 2.0f
+val planeVertices = floatArrayOf(
+    50.0f, -0.5f, 50.0f, 2.0f, 0.0f,
+    -50.0f, -0.5f, 50.0f, 0.0f, 0.0f,
+    -50.0f, -0.5f, -50.0f, 0.0f, 2.0f,
+
+    50.0f, -0.5f, 50.0f, 2.0f, 0.0f,
+    -50.0f, -0.5f, -50.0f, 0.0f, 2.0f,
+    50.0f, -0.5f, -50.0f, 2.0f, 2.0f
 )
