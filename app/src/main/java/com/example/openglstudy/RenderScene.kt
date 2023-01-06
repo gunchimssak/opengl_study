@@ -69,6 +69,7 @@ class RenderScene(
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0)
     }
 
+
     private fun test() {
         val mat1 = scale.toMat4()
         Log.e("product", "$mat1")
@@ -78,9 +79,7 @@ class RenderScene(
             1f, 2f, 3f, 4f,
             1f, 2f, 3f, 4f,
         ).toMat4()
-        Log.e("product", "$mat2")
         val result = glm.matrixCompMult(mat1, mat2)
-        Log.e("product", "$result")
     }
 
     companion object {

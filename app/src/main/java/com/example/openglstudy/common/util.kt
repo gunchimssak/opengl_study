@@ -22,9 +22,10 @@ fun compileShader(type: Int, code: String) = glCreateShader(type).also { shader 
     GL_INVALID_VALUE
     GL_INVALID_OPERATION
     result[0]
-    Log.e("123", "${result[0]}")
 }
 
+var deviceSize = Pair(0, 0)
+var angle = 0f
 fun toFloatArray(mat4: Mat4): FloatArray {
     var a: FloatArray = floatArrayOf()
     with(mat4) {

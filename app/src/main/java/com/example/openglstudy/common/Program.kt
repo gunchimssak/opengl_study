@@ -37,7 +37,6 @@ class Program(private val vertexShader: Int, private val fragmentShader: Int) {
         for (i in 0 until count[0]) {
             val name = glGetActiveAttrib(program, i, IntBuffer.allocate(1), IntBuffer.allocate(1))
             val location = glGetAttribLocation(program, name)
-            Log.e("name", "${name}")
             attributes[name] = location
         }
     }
