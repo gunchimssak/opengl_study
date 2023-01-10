@@ -10,7 +10,7 @@ data class Mesh(
     val vertices: FloatBuffer,
     val normals: FloatBuffer,
     val texCoords: FloatBuffer,
-    val indices: IntBuffer
+    val indices: IntBuffer,
 ) {
     private val data: VertexData
 
@@ -18,7 +18,7 @@ data class Mesh(
         val capacity = vertices.capacity() + normals.capacity() + texCoords.capacity()
         val buffer = ByteBuffer.allocateDirect(capacity * Float.SIZE_BYTES)
             .order(ByteOrder.nativeOrder()).asFloatBuffer()
-        var a = 0
+
         while (vertices.hasRemaining()) {
             buffer.put(vertices.get())
             buffer.put(vertices.get())
@@ -28,18 +28,17 @@ data class Mesh(
             buffer.put(normals.get())
             buffer.put(texCoords.get())
             buffer.put(texCoords.get())
-            //Log.e("mesh", "${buffer[a]} ${buffer[a + 1]} ${buffer[a + 2]} ${buffer[a  + 3]} ${buffer[a + 4]} ${buffer[a + 5]} ${buffer[a + 6]} ${buffer[a + 7]}")
-            a += 1
         }
-        buffer.position(0)
 
+        buffer.position(0)
         data = VertexData(buffer, indices, 8)
     }
 
+    //현재 vertex 데이터 한가지만 사용 normal 과 texCoord 사용하여 빛처리와 텍스쳐 입히기!!!
     fun bind(program: Program) {
         data.addAttribute(program.getAttributeLocation("aPos"), 3, 0)
         data.addAttribute(program.getAttributeLocation("aNormals"), 3, 3)
-        data.addAttribute(program.getAttributeLocation("aTexCoords"), 2, 6)
+        data.addAttribute(program.getAttributeLocation("aTexCoord"), 2, 6)
         data.bind()
         program.use()
     }

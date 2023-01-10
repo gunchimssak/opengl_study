@@ -6,13 +6,65 @@
     android:layout_height="match_parent"
     tools:context=".OpenGLActivity">
 
-    <TextView
+    <android.opengl.GLSurfaceView
+        android:id="@+id/glview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <Button
+        android:id="@+id/rotateX"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
+        android:text="x"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/rotateY"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="y"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent" />
 
+    <Button
+        android:id="@+id/rotateZ"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="z"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/scaleUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="scaleUp"
+        app:layout_constraintBottom_toTopOf="@+id/rotateX"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/scaleDown"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="scaleDown"
+        app:layout_constraintBottom_toTopOf="@+id/rotateX"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/zoomIn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="zoomIn"
+        app:layout_constraintBottom_toTopOf="@+id/scaleDown"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/zoomOut"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="zoomOut"
+        app:layout_constraintBottom_toTopOf="@+id/scaleDown"
+        app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

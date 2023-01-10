@@ -10,9 +10,10 @@ import android.view.WindowManager
 import androidx.annotation.RequiresApi
 import com.example.openglstudy.common.TouchListener
 import com.example.openglstudy.common.deviceSize
+import com.example.openglstudy.databinding.ActivityMainBinding
 
 class OpenGLActivity : Activity() {
-    private lateinit var gLView: GLSurfaceView
+    private lateinit var binding: ActivityMainBinding
 
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,11 +21,35 @@ class OpenGLActivity : Activity() {
         val windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
         val bounds = windowManager.currentWindowMetrics.bounds
         deviceSize = Pair(bounds.width(), bounds.height())
-        gLView = GLSurfaceView(this).apply {
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val scene = AssetScene.create(this@OpenGLActivity)
+        setContentView(binding.root)
+        binding.glview.apply {
             setEGLContextClientVersion(3)
-            setOnTouchListener(TouchListener(AssetScene.create(this@OpenGLActivity)))
-            setRenderer(Renderer(AssetScene.create(this@OpenGLActivity)))
+            setOnTouchListener(TouchListener(scene))
+            setRenderer(Renderer(scene))
         }
-        setContentView(gLView)
+
+        binding.rotateX.setOnClickListener {
+            scene.rotateX()
+        }
+        binding.rotateY.setOnClickListener {
+            scene.rotateY()
+        }
+        binding.rotateZ.setOnClickListener {
+            scene.rotateZ()
+        }
+        binding.scaleUp.setOnClickListener {
+            scene.scaleUp()
+        }
+        binding.scaleDown.setOnClickListener {
+            scene.scaleDown()
+        }
+        binding.zoomIn.setOnClickListener {
+            scene.cameraZoomIn()
+        }
+        binding.zoomOut.setOnClickListener {
+            scene.cameraZoomOut()
+        }
     }
 }

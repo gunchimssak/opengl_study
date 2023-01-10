@@ -95,9 +95,7 @@ class VertexData(
         val location: Int,
         val size: Int,
         val offset: Int,
-        /** Custom stride when attribute is not in order with [VertexData.stride] */
         val stride: Int? = null,
-        /** When using instancing it might be necessary to use a divisor other than default */
         val divisor: Int? = null
     )
 }

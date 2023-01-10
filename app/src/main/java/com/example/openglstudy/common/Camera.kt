@@ -5,9 +5,8 @@ import glm_.glm
 import glm_.mat4x4.Mat4
 import glm_.vec3.Vec3
 
-class Camera(
-    private val eye: Vec3 = Vec3(0, 0, -10)
-) {
+class Camera {
+    var eye: Vec3 = Vec3(0, 0, -5)
     var currentMat = glm.translate(Mat4(), eye)
     fun touch(x: Float) {
         if (x < deviceSize.first / 2) {
