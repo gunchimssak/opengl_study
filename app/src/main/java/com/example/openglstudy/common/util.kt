@@ -6,6 +6,9 @@ import android.graphics.BitmapFactory
 import android.opengl.GLES20.*
 import android.util.Log
 import androidx.annotation.RawRes
+import de.javagl.obj.ObjData
+import de.javagl.obj.ObjReader
+import de.javagl.obj.ObjUtils
 import glm_.glm
 import glm_.mat4x4.Mat4
 import glm_.vec4.Vec4
@@ -19,9 +22,19 @@ fun compileShader(type: Int, code: String) = glCreateShader(type).also { shader 
     glCompileShader(shader)
     val result = intArrayOf(-99999)
     glGetShaderiv(shader, GL_COMPILE_STATUS, result, 0)
-    GL_INVALID_VALUE
-    GL_INVALID_OPERATION
-    result[0]
+    Log.e("shader compile", "${result[0]}")
+}
+
+fun fromAssets(context: Context, assetPath: String): Mesh {
+    val obj = context.assets.open(assetPath)
+        .let { stream -> ObjReader.read(stream) }
+        .let { objStream -> ObjUtils.convertToRenderable(objStream) }
+    return Mesh(
+        indices = ObjData.getFaceVertexIndices(obj),
+        vertices = ObjData.getVertices(obj),
+        normals = ObjData.getNormals(obj),
+        texCoords = ObjData.getTexCoords(obj, 2)
+    )
 }
 
 var deviceSize = Pair(0, 0)

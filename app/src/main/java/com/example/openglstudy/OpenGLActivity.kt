@@ -22,8 +22,8 @@ class OpenGLActivity : Activity() {
         deviceSize = Pair(bounds.width(), bounds.height())
         gLView = GLSurfaceView(this).apply {
             setEGLContextClientVersion(3)
-            setOnTouchListener(TouchListener(GrassLandScene.create(this@OpenGLActivity)))
-            setRenderer(Renderer(GrassLandScene.create(this@OpenGLActivity)))
+            setOnTouchListener(TouchListener(AssetScene.create(this@OpenGLActivity)))
+            setRenderer(Renderer(AssetScene.create(this@OpenGLActivity)))
         }
         setContentView(gLView)
     }

@@ -27,6 +27,7 @@ class VertexData(
     fun addAttribute(attribute: Attribute) = attributes.add(attribute)
 
     fun addAttribute(location: Int, size: Int, offset: Int) {
+        Log.e("location","${location}")
         attributes.add(
             Attribute(
                 location = location,
@@ -79,7 +80,6 @@ class VertexData(
     }
 
     private fun bindIndices() = indices?.takeIf { it.capacity() > 0 }?.also {
-        Log.e("bind","12")
         val ebo = IntBuffer.allocate(1)
         glGenBuffers(1, ebo)
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo[0])

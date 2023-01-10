@@ -1,6 +1,6 @@
 package com.example.openglstudy.common
 
-import android.opengl.GLES20.*
+import android.opengl.GLES30.*
 import android.util.Log
 import glm_.glm
 import glm_.mat4x4.Mat4
@@ -14,6 +14,9 @@ class Program(private val vertexShader: Int, private val fragmentShader: Int) {
     private var uniforms = mutableMapOf<String, Int>()
     fun getAttributeLocation(name: String) = attributes.getValue(name)
     fun getUniformLocation(name: String) = uniforms.getValue(name)
+    fun setInt(location: Int, i: Int) = glUniform1i(location, i)
+    fun setFloat(location: Int, f: Float) = glUniform1f(location, f)
+    fun setFloat(uniformName: String, f: Float) = glUniform1f(getUniformLocation(uniformName), f)
     fun setUniformMat4(name: String, matrix: Mat4) {
         glUniformMatrix4fv(
             getUniformLocation(name),
@@ -34,9 +37,11 @@ class Program(private val vertexShader: Int, private val fragmentShader: Int) {
     private fun fetchAttributes() {
         val count = IntBuffer.allocate(1)
         glGetProgramiv(program, GL_ACTIVE_ATTRIBUTES, count) //프로그램의 정보를 가져옵니다.
+        Log.e("attribute", "${count[0]}")
         for (i in 0 until count[0]) {
             val name = glGetActiveAttrib(program, i, IntBuffer.allocate(1), IntBuffer.allocate(1))
             val location = glGetAttribLocation(program, name)
+            Log.e("attribute", "$name")
             attributes[name] = location
         }
     }
@@ -48,6 +53,7 @@ class Program(private val vertexShader: Int, private val fragmentShader: Int) {
         for (i in 0 until count[0]) {
             val name = glGetActiveUniform(program, i, IntBuffer.allocate(1), IntBuffer.allocate(1))
             val location = glGetUniformLocation(program, name)
+            Log.e("uniform", "$name")
             uniforms[name] = location
         }
     }
