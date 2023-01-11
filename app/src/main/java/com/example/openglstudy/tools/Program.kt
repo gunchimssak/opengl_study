@@ -1,11 +1,10 @@
-package com.example.openglstudy.common
+package com.example.openglstudy.tools
 
 import android.opengl.GLES30.*
 import android.util.Log
-import glm_.glm
+import com.example.openglstudy.common.compileShader
+import com.example.openglstudy.common.toFloatArray
 import glm_.mat4x4.Mat4
-import glm_.vec2.Vec2
-import glm_.vec3.Vec3
 import java.nio.IntBuffer
 
 class Program(private val vertexShader: Int, private val fragmentShader: Int) {

@@ -1,11 +1,11 @@
-package com.example.openglstudy.common
+package com.example.openglstudy.tools
 
 import android.graphics.Bitmap
 import android.opengl.GLES30
 import android.opengl.GLUtils
 import java.nio.IntBuffer
 
-class Texture(private val bitmap: Bitmap, private val internalFormat: Int? = null) {
+class Texture(private val bitmap: Bitmap) {
 
     private var id: Int? = null
 
@@ -29,11 +29,8 @@ class Texture(private val bitmap: Bitmap, private val internalFormat: Int? = nul
         GLES30.glTexParameteri(GLES30.GL_TEXTURE_2D, GLES30.GL_TEXTURE_MIN_FILTER, GLES30.GL_LINEAR_MIPMAP_LINEAR)
         GLES30.glTexParameteri(GLES30.GL_TEXTURE_2D, GLES30.GL_TEXTURE_MAG_FILTER, GLES30.GL_LINEAR)
 
-        internalFormat?.also {
-            GLUtils.texImage2D(GLES30.GL_TEXTURE_2D, 0, it, bitmap, 0)
-        } ?: run {
-            GLUtils.texImage2D(GLES30.GL_TEXTURE_2D, 0, bitmap, 0)
-        }
+        GLUtils.texImage2D(GLES30.GL_TEXTURE_2D, 0, bitmap, 0)
+
 
         GLES30.glGenerateMipmap(GLES30.GL_TEXTURE_2D)
     }

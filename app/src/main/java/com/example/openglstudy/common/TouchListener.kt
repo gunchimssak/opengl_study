@@ -1,8 +1,8 @@
 package com.example.openglstudy.common
 
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
+import com.example.openglstudy.tools.Scene
 
 class TouchListener(private val scene: Scene) : View.OnTouchListener {
     override fun onTouch(v: View?, event: MotionEvent?): Boolean {

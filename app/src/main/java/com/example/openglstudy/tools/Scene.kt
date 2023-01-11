@@ -1,5 +1,6 @@
-package com.example.openglstudy.common
+package com.example.openglstudy.tools
 
+import com.example.openglstudy.common.Camera
 import com.example.openglstudy.common.Timer
 
 abstract class Scene {

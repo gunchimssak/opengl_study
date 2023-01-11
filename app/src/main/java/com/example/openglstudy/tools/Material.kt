@@ -1,4 +1,4 @@
-package com.example.openglstudy.common
+package com.example.openglstudy.tools
 
 import glm_.vec3.Vec3
 

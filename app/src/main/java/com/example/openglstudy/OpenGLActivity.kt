@@ -2,15 +2,13 @@ package com.example.openglstudy
 
 import android.app.Activity
 import android.content.Context
-import android.opengl.GLSurfaceView
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.WindowManager
 import androidx.annotation.RequiresApi
-import com.example.openglstudy.common.TouchListener
-import com.example.openglstudy.common.deviceSize
+import com.example.openglstudy.common.*
 import com.example.openglstudy.databinding.ActivityMainBinding
+import com.example.openglstudy.scene.AssetScene
 
 class OpenGLActivity : Activity() {
     private lateinit var binding: ActivityMainBinding
@@ -31,25 +29,19 @@ class OpenGLActivity : Activity() {
         }
 
         binding.rotateX.setOnClickListener {
-            scene.rotateX()
+            scene.model *= rotateX()
         }
         binding.rotateY.setOnClickListener {
-            scene.rotateY()
+            scene.model *= rotateY()
         }
         binding.rotateZ.setOnClickListener {
-            scene.rotateZ()
+            scene.model *= rotateZ()
         }
         binding.scaleUp.setOnClickListener {
-            scene.scaleUp()
+            scene.model *= scaleUp()
         }
         binding.scaleDown.setOnClickListener {
-            scene.scaleDown()
-        }
-        binding.zoomIn.setOnClickListener {
-            scene.cameraZoomIn()
-        }
-        binding.zoomOut.setOnClickListener {
-            scene.cameraZoomOut()
+            scene.model *= scaleDown()
         }
     }
 }

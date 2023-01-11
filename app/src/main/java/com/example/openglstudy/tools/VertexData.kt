@@ -1,8 +1,9 @@
-package com.example.openglstudy.common
+package com.example.openglstudy.tools
 
 import android.opengl.GLES20.GL_STATIC_DRAW
 import android.opengl.GLES30.*
-import android.util.Log
+import com.example.openglstudy.common.toFloatBuffer
+import com.example.openglstudy.common.toIntBuffer
 import java.nio.FloatBuffer
 import java.nio.IntBuffer
 

@@ -1,10 +1,15 @@
-package com.example.openglstudy
+package com.example.openglstudy.scene
 
 import android.content.Context
 import android.opengl.GLES30.*
 import android.util.Log
+import com.example.openglstudy.R
 import com.example.openglstudy.common.*
 import com.example.openglstudy.common.loadBitmap
+import com.example.openglstudy.tools.Program
+import com.example.openglstudy.tools.Scene
+import com.example.openglstudy.tools.Texture
+import com.example.openglstudy.tools.VertexData
 import glm_.glm
 import glm_.mat4x4.Mat4
 import glm_.vec3.Vec3

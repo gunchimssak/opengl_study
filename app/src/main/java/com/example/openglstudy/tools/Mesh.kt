@@ -1,9 +1,8 @@
-package com.example.openglstudy.common
+package com.example.openglstudy.tools
 
 import android.opengl.GLES20
 import android.opengl.GLES30.*
-import android.util.Log
-import glm_.mat4x4.Mat4
+import com.example.openglstudy.common.createFloatBuffer
 import java.nio.*
 
 data class Mesh(
@@ -28,12 +27,10 @@ data class Mesh(
             buffer.put(texCoords.get())
             buffer.put(texCoords.get())
         }
-
         buffer.position(0)
         data = VertexData(buffer, indices, 8)
     }
 
-    //현재 vertex 데이터 한가지만 사용 normal 과 texCoord 사용하여 빛처리와 텍스쳐 입히기!!!
     fun bind(program: Program) {
         data.addAttribute(program.getAttributeLocation("aPos"), 3, 0)
         data.addAttribute(program.getAttributeLocation("aNormals"), 3, 3)
