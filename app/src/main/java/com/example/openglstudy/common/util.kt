@@ -22,7 +22,11 @@ fun compileShader(type: Int, code: String) = glCreateShader(type).also { shader 
     glCompileShader(shader)
     val result = intArrayOf(-99999)
     glGetShaderiv(shader, GL_COMPILE_STATUS, result, 0)
-    Log.e("shader compile", "${result[0]}")
+    val isSuccess = if (result[0] == 1) "Success" else "Fail"
+    when (type) {
+        GL_VERTEX_SHADER -> Log.e("shader compile", "Vertex Shader Compile $isSuccess")
+        GL_FRAGMENT_SHADER -> Log.e("shader compile", "Fragment Shader Compile $isSuccess")
+    }
 }
 
 fun fromAssets(context: Context, assetPath: String): Mesh {
@@ -65,6 +69,10 @@ fun FloatArray.toMat4(): Mat4 {
 }
 
 fun product(mat1: Mat4, mat2: Mat4) = glm.matrixCompMult(mat1, mat2)
+
+fun createFloatBuffer(capacity: Int): FloatBuffer =
+    ByteBuffer.allocateDirect(capacity * Float.SIZE_BYTES)
+        .order(ByteOrder.nativeOrder()).asFloatBuffer()
 
 fun FloatArray.toFloatBuffer(): FloatBuffer = ByteBuffer
     .allocateDirect(this.size * Float.SIZE_BYTES)

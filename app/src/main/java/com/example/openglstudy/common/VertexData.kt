@@ -27,7 +27,6 @@ class VertexData(
     fun addAttribute(attribute: Attribute) = attributes.add(attribute)
 
     fun addAttribute(location: Int, size: Int, offset: Int) {
-        Log.e("location","${location}")
         attributes.add(
             Attribute(
                 location = location,

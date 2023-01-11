@@ -15,6 +15,7 @@ class Program(private val vertexShader: Int, private val fragmentShader: Int) {
     fun getAttributeLocation(name: String) = attributes.getValue(name)
     fun getUniformLocation(name: String) = uniforms.getValue(name)
     fun setInt(location: Int, i: Int) = glUniform1i(location, i)
+    fun setInt(location: String, i: Int) = glUniform1i(getUniformLocation(location), i)
     fun setFloat(location: Int, f: Float) = glUniform1f(location, f)
     fun setFloat(uniformName: String, f: Float) = glUniform1f(getUniformLocation(uniformName), f)
     fun setUniformMat4(name: String, matrix: Mat4) {
@@ -37,7 +38,6 @@ class Program(private val vertexShader: Int, private val fragmentShader: Int) {
     private fun fetchAttributes() {
         val count = IntBuffer.allocate(1)
         glGetProgramiv(program, GL_ACTIVE_ATTRIBUTES, count) //프로그램의 정보를 가져옵니다.
-        Log.e("attribute", "${count[0]}")
         for (i in 0 until count[0]) {
             val name = glGetActiveAttrib(program, i, IntBuffer.allocate(1), IntBuffer.allocate(1))
             val location = glGetAttribLocation(program, name)

@@ -16,8 +16,7 @@ data class Mesh(
 
     init {
         val capacity = vertices.capacity() + normals.capacity() + texCoords.capacity()
-        val buffer = ByteBuffer.allocateDirect(capacity * Float.SIZE_BYTES)
-            .order(ByteOrder.nativeOrder()).asFloatBuffer()
+        val buffer = createFloatBuffer(capacity)
 
         while (vertices.hasRemaining()) {
             buffer.put(vertices.get())

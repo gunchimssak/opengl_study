@@ -5,7 +5,10 @@ out vec4 FragColor;
 in vec2 TexCoord;
 in vec3 Normal;
 
+uniform sampler2D diffuse;
+uniform sampler2D bump;
+
 void main() {
-    FragColor = vec4(1.0,0,0,1.0);
+    FragColor = mix(texture(diffuse,TexCoord),texture(bump,TexCoord),0.0) * vec4(1,1,1,1);
 }
 
